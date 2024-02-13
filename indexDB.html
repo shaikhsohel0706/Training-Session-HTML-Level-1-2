@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndexedDB Form Submission</title>
+</head>
+<body>
+    <form id="myForm">
+        <input type="text" id="name" name="name" placeholder='Name'>
+        <input type="email" id="email" name="email" placeholder='Email'>
+        <input type="tel" id="phone" name="phone" placeholder='Phone'>
+        <input type="text" id="address" name="address" placeholder='Address'>
+        <button type="button" class="submit" onclick="submitForm()">Submit Data</button>
+    </form>
+    <script>
+        function submitForm() {
+            const form = document.getElementById('myForm');
+            const formData = new FormData(form);
+
+            const userData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                address: formData.get('address'),
+            };
+
+            // Open or create a database
+            const dbName = 'userDataDB';
+            const request = indexedDB.open(dbName, 1);
+
+            request.onerror = function (event) {
+                console.error('Database error:', event.target.errorCode);
+            };
+            request.onupgradeneeded = function (event) {
+                const db = event.target.result;
+                // Create an object store with auto-incrementing key
+                const objectStore = db.createObjectStore('userData', { keyPath: 'id', autoIncrement: true });
+
+                // Define the structure of the data to be stored
+                objectStore.createIndex('name', 'name', { unique: false });
+                objectStore.createIndex('email', 'email', { unique: false });
+                objectStore.createIndex('phone', 'phone', { unique: false });
+                objectStore.createIndex('address', 'address', { unique: false });
+            };
+            request.onsuccess = function (event) {
+                const db = event.target.result;
+
+                // Open a transaction and access the object store
+                const transaction = db.transaction(['userData'], 'readwrite');
+                const objectStore = transaction.objectStore('userData');
+
+                // Add the user data to the object store
+                const addRequest = objectStore.add(userData);
+                addRequest.onsuccess = function () {
+                    console.log('Data added successfully!');
+                    form.reset();
+                };
+                addRequest.onerror = function () {
+                    console.error('Error adding data:', addRequest.error);
+                };
+                transaction.oncomplete = function () {
+                    db.close();
+                };
+            };
+            request.onerror = function (event) {
+                console.error('Database error:', event.target.errorCode);
+            };
+        }
+    </script>
+     
+     <style>
+        input {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        form * {
+            width: 50%;
+            margin-top: 10px;
+        }
+
+        .submit {
+            background-color: rgb(83, 124, 188);
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid black;
+        }
+        .submit:hover{
+            background-color:rgb(116, 138, 176) ;
+        }
+
+    </style>
+</body>
+</html>

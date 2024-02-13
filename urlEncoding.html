@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Encoding Input</title>
+</head>
+
+<body>
+    <h2>URL Encoding Input</h2>
+    <div>
+        <label for="inputText">Enter Text:</label>
+        <input type="text" id="inputText" placeholder="Type your text" />
+        <button onclick="encodeURL()">Encode URL</button>
+    </div>
+    <div id="result"> </div>
+    <script>
+        function encodeURL() {
+            var inputText = document.getElementById("inputText").value;
+            var encodedURL = encodeURIComponent(inputText);
+ 
+            var resultDiv = document.getElementById("result");
+ resultDiv.innerHTML ="<p>Original Text: " + inputText + "</p>" + "<p>Encoded URL: " +encodedURL +"</p>";
+        }
+    </script>
+</body>
+
+</html>

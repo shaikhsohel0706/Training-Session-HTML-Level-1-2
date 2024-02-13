@@ -1,0 +1,59 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> history managment in HTML5</title>
+</head>
+<body>
+
+    <input type="color" value="#E60A0A">
+    <h2>js history object</h2>
+    <button onclick="backfunction()"> Back</button>
+    <button onclick="forwardfunction()">Forward</button>
+    <script>
+
+        function backfunction(){
+            history.back()
+        }
+        function forwardfunction(){
+            history.forward()
+        }
+
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <div id="parent" >
+        <button id="child">Click me!</button>
+    </div>
+    
+    <script>
+        document.getElementById('parent').addEventListener('click', function() {
+            console.log('Parent clicked');
+        });
+    
+        document.getElementById('child').addEventListener('click', function() {
+            console.log('Child clicked');
+        });
+    </script>
+    <style>
+        #parent{
+            background-color: green;
+        }
+        #child{
+            color: blue;
+        }
+
+    </style>
+</body>
+</html>

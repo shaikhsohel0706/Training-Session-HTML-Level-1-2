@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> webworkers</title>
+</head>
+<body>
+    <h1>Web Workers</h1>
+    <h2 id="hi"></h2>
+    <h2 id="output"></h2>
+    <button id="btn1">Load large data</button>
+    <button id="btn2">print Hi</button>
+    <script>
+
+        //without using webworkers
+
+        // let btn1=document.getElementById('btn1')
+        // btn1.addEventListener('click',()=>{
+        //     let result=0;
+        //     for (let i=0; i<10000000; i++){
+        //         result += i;}
+        //     document.querySelector('#output').innerHTML=result;
+        // })
+        // let btn2=document.querySelector('#btn2');
+        // btn2.addEventListener('click',()=>{
+        //     document.querySelector('#hi').innerHTML+="Hi !"
+        // })
+
+        //by using webworkers
+        let btn1=document.getElementById('btn1')
+        btn1.addEventListener('click',()=>{
+            const workerobj=new Worker( "worker.js");
+            workerobj.postMessage("Start worker");
+            workerobj.onmessage = function(e){
+                document.querySelector('#output').innerHTML=e.data;
+            }
+        })
+        let btn2=document.querySelector('#btn2');
+        btn2.addEventListener('click',()=>{
+            document.querySelector('#hi').innerHTML+="Hi !"
+        })
+    </script>
+</body>
+</html>
